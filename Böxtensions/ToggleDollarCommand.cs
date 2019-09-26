@@ -1,42 +1,86 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
+﻿using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using System;
+using System.ComponentModel.Design;
+using System.Globalization;
 using Task = System.Threading.Tasks.Task;
 
 namespace Böxtensions
 {
-    /// <summary>
-    /// Command handler
-    /// </summary>
-    internal sealed class ToggleDollarCommand
+    public sealed class ToggleDollarCommand
     {
-        /// <summary>
-        /// Command ID.
-        /// </summary>
+        void Execute(object sender, EventArgs e)
+        {
+            var service = ServiceProvider.GetServiceAsync(typeof(SVsTextManager)).Result;
+            var textManager = service as IVsTextManager2;
+            IVsTextView view;
+            int result = textManager.GetActiveView2(1, null, (uint)_VIEWFRAMETYPE.vftCodeWindow, out view);
+
+            if (view == null)
+                return;
+
+            view.GetSelection(out var anchor_line, out var anchor_col, out var end_line, out var end_col);
+
+            if (anchor_col != end_col || anchor_line != end_line )
+                return;
+
+            view.SetSelection(anchor_line, 0, anchor_line, end_col);
+            view.GetSelectedText(out var line);
+
+            var action = ToggleDollar(line, end_col);
+            if (action.do_nothing)
+                return;
+
+            view.ReplaceTextOnLine(end_line, action.replace_start, action.replace_length,
+                action.substitution, action.substitution.Length);
+
+            var cursor = end_col + action.cursor_offset;
+            view.SetSelection(end_line, cursor, end_line, cursor);
+        }
+
+        public struct ReplaceAction
+        {
+            public bool do_nothing;
+            public int replace_start;
+            public int replace_length;
+            public string substitution;
+            public int cursor_offset;
+        }
+
+        public static ReplaceAction ToggleDollar(string line, int cursor)
+        {
+            var fail = new ReplaceAction { do_nothing = true };
+            var max_index = Math.Min(line.Length - 1, cursor);
+            var index_of_left_quote = line.LastIndexOf('"', max_index);
+
+            if (index_of_left_quote < 0)
+                return fail;
+
+            if (index_of_left_quote == 0 || line[index_of_left_quote-1] != '$') {
+                return new ReplaceAction {
+                    replace_start = index_of_left_quote,
+                    replace_length = 0,
+                    substitution = "$",
+                    cursor_offset = +1
+                };
+            } else {
+                return new ReplaceAction {
+                    replace_start = index_of_left_quote - 1,
+                    replace_length = 1,
+                    substitution = "",
+                    cursor_offset = -1
+                };
+            }
+        }
+    
         public const int CommandId = 0x0100;
 
-        /// <summary>
-        /// Command menu group (command set GUID).
-        /// </summary>
         public static readonly Guid CommandSet = new Guid("1514e479-da39-42f8-aec9-f629abf847cb");
 
-        /// <summary>
-        /// VS Package that provides this command, not null.
-        /// </summary>
-        private readonly AsyncPackage package;
+        readonly AsyncPackage package;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToggleDollarCommand"/> class.
-        /// Adds our command handlers for menu (commands must exist in the command table file)
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
-        /// <param name="commandService">Command service to add command to, not null.</param>
-        private ToggleDollarCommand(AsyncPackage package, OleMenuCommandService commandService)
+        ToggleDollarCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -46,68 +90,16 @@ namespace Böxtensions
             commandService.AddCommand(menuItem);
         }
 
-        /// <summary>
-        /// Gets the instance of the command.
-        /// </summary>
-        public static ToggleDollarCommand Instance
-        {
-            get;
-            private set;
-        }
+        public static ToggleDollarCommand Instance { get; private set; }
 
-        /// <summary>
-        /// Gets the service provider from the owner package.
-        /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-        {
-            get
-            {
-                return this.package;
-            }
-        }
+        Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider { get { return this.package; } }
 
-        /// <summary>
-        /// Initializes the singleton instance of the command.
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in ToggleDollarCommand's constructor requires
-            // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
             Instance = new ToggleDollarCommand(package, commandService);
-        }
-
-        /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e)
-        {
-
-        var service = ServiceProvider.GetServiceAsync(typeof(SVsTextManager)).Result;
-        var textManager = service as IVsTextManager2;
-        IVsTextView view;
-        int result = textManager.GetActiveView2(1, null, (uint)_VIEWFRAMETYPE.vftCodeWindow, out view);
-
-            view.GetSelectedText(out var pbstrText);
-
-            string message = string.Format(CultureInfo.CurrentCulture, $"Hallo Welt! {pbstrText}");
-            string title = "ToggleDollarCommand";
-
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
     }
 }

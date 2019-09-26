@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Böxtensions", "Böxtensions\Böxtensions.csproj", "{932B69A8-1E30-4A8E-B851-15749E5547E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Böxtensions.Tests", "Böxtensions.Tests\Böxtensions.Tests.csproj", "{D5BEE8AC-CF8A-4E8F-ADC3-F56CA512474C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{932B69A8-1E30-4A8E-B851-15749E5547E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{932B69A8-1E30-4A8E-B851-15749E5547E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{932B69A8-1E30-4A8E-B851-15749E5547E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5BEE8AC-CF8A-4E8F-ADC3-F56CA512474C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5BEE8AC-CF8A-4E8F-ADC3-F56CA512474C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5BEE8AC-CF8A-4E8F-ADC3-F56CA512474C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5BEE8AC-CF8A-4E8F-ADC3-F56CA512474C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
