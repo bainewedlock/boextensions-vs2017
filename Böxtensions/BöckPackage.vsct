@@ -22,13 +22,13 @@
 
   <!--The Commands section is where commands, menus, and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
-  <Commands package="guidBöckPackage">
+  <Commands package="guidBöxtensionsPackage">
       <Menus>
-          <Menu guid="guidBöckPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
+          <Menu guid="guidBöxtensionsPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
               <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS"/>
               <Strings>
-                  <ButtonText>BöckToggleDollar</ButtonText>
-                  <CommandName>BöckMenü</CommandName>
+                  <ButtonText>Böxtensions</ButtonText>
+                  <CommandName>Böxtensions</CommandName>
               </Strings>
           </Menu>
       </Menus>
@@ -45,8 +45,8 @@
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
     <Groups>
-      <Group guid="guidBöckPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidBöckPackageCmdSet" id="TopLevelMenu"/>
+      <Group guid="guidBöxtensionsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidBöxtensionsPackageCmdSet" id="TopLevelMenu"/>
       </Group>
     </Groups>
 
@@ -61,8 +61,8 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidBöckPackageCmdSet" id="ToggleDollarCommandId" priority="0x0100" type="Button">
-        <Parent guid="guidBöckPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidBöxtensionsPackageCmdSet" id="ToggleDollarCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidBöxtensionsPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
           <ButtonText>Invoke ToggleDollarCommand</ButtonText>
@@ -83,10 +83,10 @@
 
   <Symbols>
     <!-- This is the package guid. -->
-    <GuidSymbol name="guidBöckPackage" value="{9e8966c4-f434-4adb-8d9c-3a4108fd3293}" />
+    <GuidSymbol name="guidBöxtensionsPackage" value="{9e8966c4-f434-4adb-8d9c-3a4108fd3293}" />
 
     <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidBöckPackageCmdSet" value="{1514e479-da39-42f8-aec9-f629abf847cb}">
+    <GuidSymbol name="guidBöxtensionsPackageCmdSet" value="{1514e479-da39-42f8-aec9-f629abf847cb}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="ToggleDollarCommandId" value="0x0100" />
       <IDSymbol name="TopLevelMenu" value="0x1021" />

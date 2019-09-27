@@ -70,7 +70,7 @@
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <Content Include="index.html" />
-    <Content Include="Resources\BöckPackage.ico">
+    <Content Include="Resources\BöxtensionsPackage.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

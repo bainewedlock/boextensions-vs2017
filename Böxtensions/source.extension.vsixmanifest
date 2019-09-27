@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Böxtensions.b10b4ee4-0685-4a78-8a05-6fe413be4fe6" Version="1.1.1" Language="en-US" Publisher="Baine Wedlock" />
+        <Identity Id="Böxtensions.b10b4ee4-0685-4a78-8a05-6fe413be4fe6" Version="1.1.2" Language="en-US" Publisher="Baine Wedlock" />
         <DisplayName>Böxtensions</DisplayName>
         <Description xml:space="preserve">Yeah, Baby.</Description>
-        <Icon>Resources\BöckPackage.ico</Icon>
+        <Icon>Resources\BöxtensionsPackage.ico</Icon>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 17.0)" />
