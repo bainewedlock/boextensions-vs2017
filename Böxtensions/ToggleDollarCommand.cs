@@ -57,16 +57,21 @@ namespace Böxtensions
             if (index_of_left_quote < 0)
                 return fail;
 
-            if (index_of_left_quote == 0 || line[index_of_left_quote-1] != '$') {
+            var index_of_dollar =
+                index_of_left_quote > 0 && line[index_of_left_quote - 1] == '@'
+                ? index_of_left_quote - 1
+                : index_of_left_quote;
+
+            if (index_of_dollar == 0 || line[index_of_dollar-1] != '$') {
                 return new ReplaceAction {
-                    replace_start = index_of_left_quote,
+                    replace_start = index_of_dollar,
                     replace_length = 0,
                     substitution = "$",
                     cursor_offset = +1
                 };
             } else {
                 return new ReplaceAction {
-                    replace_start = index_of_left_quote - 1,
+                    replace_start = index_of_dollar - 1,
                     replace_length = 1,
                     substitution = "",
                     cursor_offset = -1
