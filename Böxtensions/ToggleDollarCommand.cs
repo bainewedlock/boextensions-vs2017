@@ -29,11 +29,11 @@ namespace Böxtensions
             view.GetSelectedText(out var line);
 
             var action = ToggleDollar(line, end_col);
-            if (action.do_nothing)
-                return;
-
-            view.ReplaceTextOnLine(end_line, action.replace_start, action.replace_length,
-                action.substitution, action.substitution.Length);
+            if (!action.do_nothing)
+            { 
+                view.ReplaceTextOnLine(end_line, action.replace_start, action.replace_length,
+                    action.substitution, action.substitution.Length);
+            }
 
             var cursor = end_col + action.cursor_offset;
             view.SetSelection(end_line, cursor, end_line, cursor);

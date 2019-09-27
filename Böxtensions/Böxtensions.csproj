@@ -70,7 +70,10 @@
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <Content Include="index.html" />
-    <Content Include="Resources\BöckPackage.ico" />
+    <Content Include="Resources\BöckPackage.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\ToggleDollarCommand.png" />
     <Content Include="stylesheet.css" />
   </ItemGroup>
